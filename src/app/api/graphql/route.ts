@@ -1,5 +1,6 @@
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { ApolloServer } from '@apollo/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 
 const resolvers = {
@@ -19,6 +20,10 @@ const server = new ApolloServer({
   typeDefs,
 });
 
-const handler = startServerAndCreateNextHandler(server)
+const handler = startServerAndCreateNextHandler(server, {
+    context: (req: NextRequest, res: NextResponse) => {
+      return { req, res }; // Return a valid context object
+    },
+  });
 
 export { handler as GET, handler as POST};
